@@ -5,15 +5,17 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
+import androidx.preference.PreferenceManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView emptyStateView;
     private CircularProgressIndicator progressIndicator;
 
-    private final static String REQUEST_URL = "https://content.guardianapis.com/search?pageSize=10&show-fields=headline,thumbnail,byline,trailText,shortUrl&show-references=author&api-key=f2931c30-4d53-4790-8140-e3b507f5556a";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,24 +70,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
+        loadUI();
+
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
                 loadUI();
             }
         });
-
-        loadUI();
-
     }
 
     @NonNull
     @Override
     public Loader<ArrayList<NewsData>> onCreateLoader(int id, @Nullable Bundle args) {
+        String pageSize = getPrefStringValue(R.string.settings_pageSize_key, R.string.settings_pageSize_default);
 
-         return new NewsArticlesLoader(this, REQUEST_URL);
+        String requestUrl = UrlConstructor.constructUrl(pageSize);
+        Log.e(TAG, "onCreateLoader: requestURL = " + requestUrl);
+        return new NewsArticlesLoader(this, requestUrl);
 
     }
 
@@ -98,37 +101,53 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         else {
             newsAdapter.addAll(newsArticles);
         }
+        swipeRefreshLayout.setRefreshing(false);
         progressIndicator.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<ArrayList<NewsData>> loader) {
-
         newsAdapter.clear();
 
     }
 
+
+
     public void loadUI() {
+
         if(QueryUtils.isNetworkConnected(this)) {
-            getSupportLoaderManager().initLoader(NEWS_LOADER_ID, null, this);
+            getSupportLoaderManager().destroyLoader(NEWS_LOADER_ID);
+            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
         } else {
             progressIndicator.setVisibility(View.INVISIBLE);
             emptyStateView.setText(R.string.no_internet);
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
 
-//    public class NewsAsyncTask extends AsyncTask<String, Void, List<NewsData>> {
-//
-//        @Override
-//        protected List<NewsData> doInBackground(String... strings) {
-//            List<NewsData> newsArticles = QueryUtils.fetchNewsArticles(strings[0]);
-//            return  newsArticles;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<NewsData> newsArticles) {
-//            newsAdapter.addAll(newsArticles);
-//        }
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private String getPrefStringValue(int key, int default_value) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPrefs.getString(
+                getString(key),
+                getString(default_value)
+        );
+    }
 }
