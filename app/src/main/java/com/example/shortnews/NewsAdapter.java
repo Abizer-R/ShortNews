@@ -45,12 +45,19 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
 
         ImageView thumbnail = listItemView.findViewById(R.id.thumbnail);
         String thumbnailUrl = currNewsObject.getThumbnailUrl();
-        Glide
-                .with(getContext())
-                .load(thumbnailUrl)
-                .centerCrop()
-                .placeholder(R.drawable.thumbnail_placeholder)
-                .into(thumbnail);
+        if(thumbnailUrl == null) {
+            TextView noThumbnail = listItemView.findViewById(R.id.no_thumbnail_warning);
+            noThumbnail.setText(R.string.no_thumbnail_available);
+            thumbnail.setImageResource(R.drawable.thumbnail_placeholder);
+        }
+        else {
+            Glide
+                    .with(getContext())
+                    .load(thumbnailUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.thumbnail_placeholder)
+                    .into(thumbnail);
+        }
         // To get rounded corners
         thumbnail.setClipToOutline(true);
 
@@ -79,16 +86,18 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         }
         long unixTime = outputDate.getTime() / 1000;
         long currUnixTime = Calendar.getInstance().getTimeInMillis() / 1000;
+        long secondsElapsedAfterPublishing = (currUnixTime - unixTime - 19800);
 
         //19800 is subtracted because India Standard Time (IST) is 5:30 hours ahead of Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)
-        if((currUnixTime - unixTime - 19800) / 3600 > 24)
-            return "" + ((currUnixTime - unixTime - 19800) / (3600*24)) + " days ago";
-        else if((currUnixTime - unixTime - 19800) / 60 > 60)
-            return "" + ((currUnixTime - unixTime - 19800) / 3600) + " hours ago";
-        else if((currUnixTime - unixTime - 19800) > 60)
-            return "" + ((currUnixTime - unixTime - 19800) / 60) + " minutes ago";
+        if(secondsElapsedAfterPublishing / 3600 > 24)
+            return "" + (secondsElapsedAfterPublishing / (3600*24)) + " days ago";
+        else if(secondsElapsedAfterPublishing / 60 > 60)
+            return "" + (secondsElapsedAfterPublishing / 3600) + " hours ago";
+        else if(secondsElapsedAfterPublishing > 60)
+            return "" + (secondsElapsedAfterPublishing / 60) + " minutes ago";
         else
-            return "" + (currUnixTime - unixTime - 19800) + " seconds ago";
+            return "" + secondsElapsedAfterPublishing + " seconds ago";
+
 
     }
 

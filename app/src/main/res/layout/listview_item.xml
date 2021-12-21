@@ -23,6 +23,14 @@
         android:elevation="20dp"/>
 
     <TextView
+        android:id="@+id/no_thumbnail_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_thumbnail_available"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+        app:layout_constraintStart_toStartOf="@+id/thumbnail" />
+
+    <TextView
         android:id="@+id/source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

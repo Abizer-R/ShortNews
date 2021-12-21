@@ -84,9 +84,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @NonNull
     @Override
     public Loader<ArrayList<NewsData>> onCreateLoader(int id, @Nullable Bundle args) {
-        String pageSize = getPrefStringValue(R.string.settings_pageSize_key, R.string.settings_pageSize_default);
+        String pageSize = getPrefStringValue(R.string.pref_pageSize_key, R.string.pref_pageSize_default);
+        String orderBy = getPrefStringValue(R.string.pref_orderBy_key, R.string.pref_orderBy_default);
+        String dateRange = getPrefStringValue(R.string.pref_dateRange_key, R.string.pref_dateRange_default);
 
-        String requestUrl = UrlConstructor.constructUrl(pageSize);
+        String requestUrl = UrlConstructor.constructUrl(pageSize, orderBy, dateRange);
         Log.e(TAG, "onCreateLoader: requestURL = " + requestUrl);
         return new NewsArticlesLoader(this, requestUrl);
 

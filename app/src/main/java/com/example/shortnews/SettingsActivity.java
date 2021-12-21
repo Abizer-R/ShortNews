@@ -40,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.root_preferences);
 
-            EditTextPreference pageSizePrefs = findPreference(getResources().getString(R.string.settings_pageSize_key));
+            EditTextPreference pageSizePrefs = findPreference(getResources().getString(R.string.pref_pageSize_key));
             if(pageSizePrefs != null) {
                 pageSizePrefs.setOnBindEditTextListener(new EditTextPreference.OnBindEditTextListener() {
                     @Override
