@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/settings_title">
+
+    <EditTextPreference
+        android:title="@string/pref_pageSize_title"
+        android:key="@string/pref_pageSize_key"
+        android:defaultValue="@string/pref_pageSize_default"/>
+
+    <ListPreference
+        android:title="@string/pref_orderBy_title"
+        android:key="@string/pref_orderBy_key"
+        android:defaultValue="@string/pref_orderBy_default"
+        android:entries="@array/pref_orderBy_labels"
+        android:entryValues="@array/pref_orderBy_values"/>
+
+    <ListPreference
+        android:title="@string/pref_dateRange_title"
+        android:key="@string/pref_dateRange_key"
+        android:defaultValue="@string/pref_dateRange_default"
+        android:entries="@array/pref_dateRange_labels"
+        android:entryValues="@array/pref_dateRange_values"/>
+
+</PreferenceScreen>

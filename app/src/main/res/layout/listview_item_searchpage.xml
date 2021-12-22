@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="24dp"
+    android:clipToPadding="false">
+
+<!--        android:layout_width="156dp"-->
+<!--        android:layout_height="112dp"-->
+    <ImageView
+        android:id="@+id/thumbnail_searchpage"
+        android:layout_width="0dp"
+        android:layout_height="105dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round_imageview"
+        android:elevation="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/thumbnail_placeholder"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/source_searchpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="THE TIMES OF INDIA"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/thumbnail_searchpage" />
+
+    <TextView
+        android:id="@+id/title_searchpage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="4"
+        android:text="Following Apple, Microsoft made it easier to buy Surface repair tools"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/thumbnail_searchpage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/source_searchpage" />
+
+    <TextView
+        android:id="@+id/date_searchpage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="MAR 3, '21"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/title_searchpage"
+        app:layout_constraintTop_toBottomOf="@+id/title_searchpage" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.example.shortnews;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +32,7 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         View listItemView = convertView;
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.listview_item,
+                    R.layout.listview_item_homepage,
                     parent,
                     false
             );
@@ -43,25 +40,32 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
 
         NewsData currNewsObject = getItem(position);
 
-        ImageView thumbnail = listItemView.findViewById(R.id.thumbnail);
+        ImageView thumbnail = listItemView.findViewById(R.id.thumbnail_homepage);
         String thumbnailUrl = currNewsObject.getThumbnailUrl();
-        Glide
-                .with(getContext())
-                .load(thumbnailUrl)
-                .centerCrop()
-                .placeholder(R.drawable.thumbnail_placeholder)
-                .into(thumbnail);
+        if(thumbnailUrl == null) {
+            TextView noThumbnail = listItemView.findViewById(R.id.no_thumbnail_warning_homepage);
+            noThumbnail.setText(R.string.no_thumbnail_available);
+            thumbnail.setImageResource(R.drawable.thumbnail_placeholder);
+        }
+        else {
+            Glide
+                    .with(getContext())
+                    .load(thumbnailUrl)
+                    .centerCrop()
+                    .placeholder(R.drawable.thumbnail_placeholder)
+                    .into(thumbnail);
+        }
         // To get rounded corners
         thumbnail.setClipToOutline(true);
 
-        TextView source = listItemView.findViewById(R.id.source);
+        TextView source = listItemView.findViewById(R.id.source_homepage);
         source.setText(currNewsObject.getNewsSource());
 
-        TextView title = listItemView.findViewById(R.id.title);
+        TextView title = listItemView.findViewById(R.id.title_homepage);
         title.setText(currNewsObject.getNewsTitle());
 
         String date_time = currNewsObject.getNewsDateTime();
-        TextView date = listItemView.findViewById(R.id.date);
+        TextView date = listItemView.findViewById(R.id.date_homepage);
         date.setText(formatDate(date_time));
 
         return listItemView;
@@ -79,16 +83,18 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         }
         long unixTime = outputDate.getTime() / 1000;
         long currUnixTime = Calendar.getInstance().getTimeInMillis() / 1000;
+        long secondsElapsedAfterPublishing = (currUnixTime - unixTime - 19800);
 
         //19800 is subtracted because India Standard Time (IST) is 5:30 hours ahead of Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)
-        if((currUnixTime - unixTime - 19800) / 3600 > 24)
-            return "" + ((currUnixTime - unixTime - 19800) / (3600*24)) + " days ago";
-        else if((currUnixTime - unixTime - 19800) / 60 > 60)
-            return "" + ((currUnixTime - unixTime - 19800) / 3600) + " hours ago";
-        else if((currUnixTime - unixTime - 19800) > 60)
-            return "" + ((currUnixTime - unixTime - 19800) / 60) + " minutes ago";
+        if(secondsElapsedAfterPublishing / 3600 > 24)
+            return "" + (secondsElapsedAfterPublishing / (3600*24)) + " days ago";
+        else if(secondsElapsedAfterPublishing / 60 > 60)
+            return "" + (secondsElapsedAfterPublishing / 3600) + " hours ago";
+        else if(secondsElapsedAfterPublishing > 60)
+            return "" + (secondsElapsedAfterPublishing / 60) + " minutes ago";
         else
-            return "" + (currUnixTime - unixTime - 19800) + " seconds ago";
+            return "" + secondsElapsedAfterPublishing + " seconds ago";
+
 
     }
 

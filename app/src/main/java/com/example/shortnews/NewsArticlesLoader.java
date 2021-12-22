@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsArticlesLoader extends AsyncTaskLoader<ArrayList<NewsData>> {
-    private String requestUrl;
+    private final String requestUrl;
 
 
     public NewsArticlesLoader(@NonNull Context context, String requestUrl) {

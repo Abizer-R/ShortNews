@@ -1,15 +1,7 @@
 package com.example.shortnews;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.preference.PreferenceManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-
+import android.app.ActionBar;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,33 +17,59 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import java.util.ArrayList;
 
+public class SearchableActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<NewsData>> {
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<NewsData>> {
+    private final static String TAG = SearchableActivity.class.getSimpleName();
+    private final static int SEARCH_NEWS_LOADER_ID = 2;
 
-// c0515b0da7f54bcd993091bbd5232e56
-    private final static String TAG = MainActivity.class.getSimpleName();
-    private final static int NEWS_LOADER_ID = 1;
+    private int count = 0;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private ListView itemsListView;
     private NewsAdapter newsAdapter;
     private TextView emptyStateView;
     private CircularProgressIndicator progressIndicator;
-
-
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_search);
 
-        itemsListView = findViewById(R.id.itemsListView_homepage);
+        handleIntent(getIntent());
+    }
 
-        emptyStateView = findViewById(R.id.empty_state_view);
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntent(getIntent());
+        super.onNewIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        count++;
+        Log.e(TAG, "handleIntent: COUNT = " + count);
+
+        invalidateOptionsMenu();
+
+        // ----------------------
+        itemsListView = findViewById(R.id.itemsListView_searchpage);
+
+        emptyStateView = findViewById(R.id.empty_state_view_searchpage);
         itemsListView.setEmptyView(emptyStateView);
 
         progressIndicator = findViewById(R.id.progress_indicator);
@@ -71,16 +89,22 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        loadUI();
-
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout_searchpage);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 loadUI();
             }
         });
+        // ----------------------
+
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+            loadUI();
+        }
     }
+
+
 
     @NonNull
     @Override
@@ -89,10 +113,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         String orderBy = getPrefStringValue(R.string.pref_orderBy_key, R.string.pref_orderBy_default);
         String dateRange = getPrefStringValue(R.string.pref_dateRange_key, R.string.pref_dateRange_default);
 
-        String requestUrl = UrlConstructor.constructUrl(pageSize, orderBy, dateRange);
+        String requestUrl = UrlConstructor.constructUrl(pageSize, orderBy, dateRange, query);
         Log.e(TAG, "onCreateLoader: requestURL = " + requestUrl);
         return new NewsArticlesLoader(this, requestUrl);
-
     }
 
     @Override
@@ -100,8 +123,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if(newsArticles == null || newsArticles.size() == 0) {
             emptyStateView.setText(R.string.empty_state_text);
-        }
-        else {
+        } else {
             newsAdapter.addAll(newsArticles);
         }
         swipeRefreshLayout.setRefreshing(false);
@@ -111,37 +133,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(@NonNull Loader<ArrayList<NewsData>> loader) {
         newsAdapter.clear();
-
     }
-
-
-
-    public void loadUI() {
-
-        if(QueryUtils.isNetworkConnected(this)) {
-            getSupportLoaderManager().destroyLoader(NEWS_LOADER_ID);
-            getSupportLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
-        } else {
-            progressIndicator.setVisibility(View.INVISIBLE);
-            emptyStateView.setText(R.string.no_internet);
-            swipeRefreshLayout.setRefreshing(false);
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search_view).getActionView();
-        ComponentName componentName = new ComponentName(this, SearchableActivity.class);
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(componentName));
-
+        MenuItem menuItem = menu.findItem(R.id.search_view);
+        menuItem.setVisible(false);
 
 
         return true;
@@ -155,11 +154,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             startActivity(settingsIntent);
             return true;
         }
-        else if(id == android.R.id.home) {
-            finish();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void loadUI() {
+        getSupportActionBar().setTitle("\"" + query + "\"");
+        if(QueryUtils.isNetworkConnected(this)) {
+            getSupportLoaderManager().destroyLoader(SEARCH_NEWS_LOADER_ID);
+            getSupportLoaderManager().restartLoader(SEARCH_NEWS_LOADER_ID, null, this);
+        } else {
+            progressIndicator.setVisibility(View.INVISIBLE);
+            emptyStateView.setText(R.string.no_internet);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
     }
 
     private String getPrefStringValue(int key, int default_value) {

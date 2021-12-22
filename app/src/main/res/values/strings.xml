@@ -1,6 +1,49 @@
 <resources>
     <string name="app_name">ShortNews</string>
-    
+
     <string name="empty_state_text">No articles avalaible at this moment</string>
     <string name="no_internet">No internet connection</string>
+    <string name="no_thumbnail_available">Thumbnail not available</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_menu_item">SettingsActivity</string>
+    <string name="search_view_title">Search</string>
+    <string name="search_view_hint">Try searching "covid"</string>
+
+
+    <!-- Strings for pageSize preferences -->
+    <string name="pref_pageSize_title">Number of articles per page</string>
+    <string name="pref_pageSize_key" translatable="false">pageSize</string>
+    <string name="pref_pageSize_default" translatable="false">10</string>
+
+    <!-- Strings for Order-BY Preferences -->
+    <!-- Title, key, default -->
+    <string name="pref_orderBy_title">Sort Order</string>
+    <string name="pref_orderBy_key">orderBy</string>
+    <string name="pref_orderBy_default">@string/pref_orderBy_newest_value</string>
+    <!-- Labels -->
+    <string name="pref_orderBy_newest_label">Newest</string>
+    <string name="pref_orderBy_oldest_label">Oldest</string>
+    <string name="pref_orderBy_relevance_label">Relevance</string>
+    <!-- Values -->
+    <string name="pref_orderBy_newest_value" translatable="false">newest</string>
+    <string name="pref_orderBy_oldest_value" translatable="false">oldest</string>
+    <string name="pref_orderBy_relevance_value" translatable="false">relevance</string>
+
+    <!-- Strings for Date Range Preferences -->
+    <!-- Title, key, default -->
+    <string name="pref_dateRange_title">Articles Date Range</string>
+    <string name="pref_dateRange_key">date_range</string>
+    <string name="pref_dateRange_default">@string/pref_dateRange_last_24_hours_value</string>
+    <!-- Labels -->
+    <string name="pref_dateRange_last_24_hours_label">Last 24 hours</string>
+    <string name="pref_dateRange_last_7_days_label">Last 7 days</string>
+    <string name="pref_dateRange_last_1_month_label">Last 1 month</string>
+    <string name="pref_dateRange_last_1_year_label">Last 1 year</string>
+    <!-- Values -->
+    <string name="pref_dateRange_last_24_hours_value">86400</string>
+    <string name="pref_dateRange_last_7_days_value">604800</string>
+    <string name="pref_dateRange_last_1_month_value">2592000</string>
+    <string name="pref_dateRange_last_1_year_value">31536000</string>
+
 </resources>
