@@ -7,6 +7,9 @@
 
     <string name="settings_title">Settings</string>
     <string name="settings_menu_item">SettingsActivity</string>
+    <string name="search_view_title">Search</string>
+    <string name="search_view_hint">Try searching "covid"</string>
+
 
     <!-- Strings for pageSize preferences -->
     <string name="pref_pageSize_title">Number of articles per page</string>

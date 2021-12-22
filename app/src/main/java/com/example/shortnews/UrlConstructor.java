@@ -35,6 +35,24 @@ public final class UrlConstructor {
 
         return urlBuilder.toString();
     }
+    public static String constructUrl(String pageSizePref, String orderByPref, String datePref, String searchQuery) {
+        StringBuilder urlBuilder = new StringBuilder();
+
+        String query = "q=" + searchQuery;
+        String pageSize = "&page-size=" + pageSizePref;
+        String orderBy = "&order-by=" + orderByPref;
+        String dateRange = "&from-date=" + getDateRange(datePref);
+
+        urlBuilder.append(BASE_URL);
+        urlBuilder.append(query);
+        urlBuilder.append(pageSize);
+        urlBuilder.append(orderBy);
+        urlBuilder.append(dateRange);
+        urlBuilder.append(EXTRAS);
+        urlBuilder.append(API_KEY);
+
+        return urlBuilder.toString();
+    }
 
     private static String getDateRange(String datePref) {
         long currUTCTime = Calendar.getInstance().getTimeInMillis() - 19800000;

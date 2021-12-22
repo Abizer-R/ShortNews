@@ -1,7 +1,6 @@
 package com.example.shortnews;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +32,7 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         View listItemView = convertView;
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.listview_item,
+                    R.layout.listview_item_homepage,
                     parent,
                     false
             );
@@ -43,10 +40,10 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
 
         NewsData currNewsObject = getItem(position);
 
-        ImageView thumbnail = listItemView.findViewById(R.id.thumbnail);
+        ImageView thumbnail = listItemView.findViewById(R.id.thumbnail_homepage);
         String thumbnailUrl = currNewsObject.getThumbnailUrl();
         if(thumbnailUrl == null) {
-            TextView noThumbnail = listItemView.findViewById(R.id.no_thumbnail_warning);
+            TextView noThumbnail = listItemView.findViewById(R.id.no_thumbnail_warning_homepage);
             noThumbnail.setText(R.string.no_thumbnail_available);
             thumbnail.setImageResource(R.drawable.thumbnail_placeholder);
         }
@@ -61,14 +58,14 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         // To get rounded corners
         thumbnail.setClipToOutline(true);
 
-        TextView source = listItemView.findViewById(R.id.source);
+        TextView source = listItemView.findViewById(R.id.source_homepage);
         source.setText(currNewsObject.getNewsSource());
 
-        TextView title = listItemView.findViewById(R.id.title);
+        TextView title = listItemView.findViewById(R.id.title_homepage);
         title.setText(currNewsObject.getNewsTitle());
 
         String date_time = currNewsObject.getNewsDateTime();
-        TextView date = listItemView.findViewById(R.id.date);
+        TextView date = listItemView.findViewById(R.id.date_homepage);
         date.setText(formatDate(date_time));
 
         return listItemView;

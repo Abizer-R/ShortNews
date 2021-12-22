@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
     android:clipToPadding="false">
 
     <ImageView
-        android:id="@+id/thumbnail"
+        android:id="@+id/thumbnail_homepage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
@@ -23,25 +24,25 @@
         android:elevation="20dp"/>
 
     <TextView
-        android:id="@+id/no_thumbnail_warning"
+        android:id="@+id/no_thumbnail_warning_homepage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/no_thumbnail_available"
-        app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
-        app:layout_constraintStart_toStartOf="@+id/thumbnail" />
+        app:layout_constraintBottom_toBottomOf="@+id/thumbnail_homepage"
+        app:layout_constraintStart_toStartOf="@+id/thumbnail_homepage" />
 
     <TextView
-        android:id="@+id/source"
+        android:id="@+id/source_homepage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="THE TIMES OF INDIA"
         android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/thumbnail"
-        app:layout_constraintTop_toBottomOf="@+id/thumbnail"
+        app:layout_constraintStart_toStartOf="@+id/thumbnail_homepage"
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail_homepage"
         android:layout_marginTop="8dp"/>
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/title_homepage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Following Apple, Microsoft made it easier to buy Surface repair tools"
@@ -51,16 +52,16 @@
         android:maxLines="4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/source" />
+        app:layout_constraintTop_toBottomOf="@+id/source_homepage" />
 
     <TextView
-        android:id="@+id/date"
+        android:id="@+id/date_homepage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MAR 3, '21"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintStart_toStartOf="@+id/title_homepage"
+        app:layout_constraintTop_toBottomOf="@+id/title_homepage"
         android:layout_marginBottom="24dp"/>
 
 

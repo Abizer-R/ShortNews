@@ -7,6 +7,16 @@
         android:title="@string/settings_title"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_settings"
-        android:orderInCategory="1"/>
+        android:orderInCategory="2"/>
+
+    <item
+        android:id="@+id/search_view"
+        android:title="@string/search_view_title"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_search_view"
+        android:orderInCategory="1"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+
 
 </menu>
