@@ -86,29 +86,21 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         long secondsElapsedAfterPublishing = (currUnixTime - unixTime - 19800);
 
         //19800 is subtracted because India Standard Time (IST) is 5:30 hours ahead of Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)
-        if(secondsElapsedAfterPublishing / 3600 > 24)
+        if(secondsElapsedAfterPublishing / 3600 > 24 && secondsElapsedAfterPublishing / 3600 < 48)
+            return "" + (secondsElapsedAfterPublishing / (3600*24)) + " day ago";
+        else if(secondsElapsedAfterPublishing / 3600 >= 48)
             return "" + (secondsElapsedAfterPublishing / (3600*24)) + " days ago";
-        else if(secondsElapsedAfterPublishing / 60 > 60)
+        else if(secondsElapsedAfterPublishing / 60 > 60 && secondsElapsedAfterPublishing / 60 < 120)
+            return "" + (secondsElapsedAfterPublishing / 3600) + " hour ago";
+        else if(secondsElapsedAfterPublishing / 60 >= 120)
             return "" + (secondsElapsedAfterPublishing / 3600) + " hours ago";
-        else if(secondsElapsedAfterPublishing > 60)
+        else if(secondsElapsedAfterPublishing > 60 && secondsElapsedAfterPublishing < 120)
+            return "" + (secondsElapsedAfterPublishing / 60) + " minute ago";
+        else if(secondsElapsedAfterPublishing >= 120)
             return "" + (secondsElapsedAfterPublishing / 60) + " minutes ago";
         else
             return "" + secondsElapsedAfterPublishing + " seconds ago";
 
 
-    }
-
-    private String formatTime(String inputTime) {
-        final SimpleDateFormat inputParser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-        Date outputTime = null;
-        try {
-            outputTime = inputParser.parse(inputTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        final SimpleDateFormat outputFormatter = new SimpleDateFormat("hh:mm a");
-        return outputFormatter.format(outputTime);
     }
 }
