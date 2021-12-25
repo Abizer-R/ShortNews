@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,9 +22,15 @@ import java.util.Date;
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<NewsData> {
+    private final int MAINACTIVITY_ID = 1;
+    private final int SEARCHACTIVITY_ID = 2;
+    int contextID;
+    int layoutResourceId;
 
-    public NewsAdapter(@NonNull Context context, int resource, @NonNull List<NewsData> objects) {
+    public NewsAdapter(@NonNull Context context, int resource, @NonNull List<NewsData> objects, int layoutResourceId, int contextID) {
         super(context, 0, objects);
+        this.contextID = contextID;
+        this.layoutResourceId = layoutResourceId;
     }
 
 
@@ -32,15 +40,31 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         View listItemView = convertView;
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.listview_item_homepage,
+                    layoutResourceId,
                     parent,
                     false
             );
         }
 
         NewsData currNewsObject = getItem(position);
+        ImageView thumbnail;
+        TextView source;
+        TextView title;
+        TextView date;
 
-        ImageView thumbnail = listItemView.findViewById(R.id.thumbnail_homepage);
+
+        if(contextID == MAINACTIVITY_ID) {
+            thumbnail = listItemView.findViewById(R.id.thumbnail_homepage);
+            source = listItemView.findViewById(R.id.source_homepage);
+            title = listItemView.findViewById(R.id.title_homepage);
+            date = listItemView.findViewById(R.id.date_homepage);
+        } else {
+            thumbnail = listItemView.findViewById(R.id.thumbnail_searchpage);
+            source = listItemView.findViewById(R.id.source_searchpage);
+            title = listItemView.findViewById(R.id.title_searchpage);
+            date = listItemView.findViewById(R.id.date_searchpage);
+        }
+
         String thumbnailUrl = currNewsObject.getThumbnailUrl();
         if(thumbnailUrl == null) {
             TextView noThumbnail = listItemView.findViewById(R.id.no_thumbnail_warning_homepage);
@@ -58,14 +82,11 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         // To get rounded corners
         thumbnail.setClipToOutline(true);
 
-        TextView source = listItemView.findViewById(R.id.source_homepage);
         source.setText(currNewsObject.getNewsSource());
-
-        TextView title = listItemView.findViewById(R.id.title_homepage);
         title.setText(currNewsObject.getNewsTitle());
 
+        // Converting date into "time elapsed since article posted"
         String date_time = currNewsObject.getNewsDateTime();
-        TextView date = listItemView.findViewById(R.id.date_homepage);
         date.setText(formatDate(date_time));
 
         return listItemView;

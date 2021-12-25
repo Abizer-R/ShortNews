@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:paddingStart="20dp"
-    android:paddingEnd="20dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
     android:paddingBottom="24dp"
     android:clipToPadding="false">
 
@@ -14,34 +14,38 @@
         android:id="@+id/thumbnail_searchpage"
         android:layout_width="0dp"
         android:layout_height="105dp"
-        android:layout_marginTop="24dp"
         android:background="@drawable/round_imageview"
-        android:elevation="20dp"
+        android:elevation="16dp"
+
         android:scaleType="centerCrop"
         android:src="@drawable/thumbnail_placeholder"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/source_searchpage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="THE TIMES OF INDIA"
+        android:textSize="14sp"
         android:textColor="@color/black"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/thumbnail_searchpage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/thumbnail_searchpage" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title_searchpage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:maxLines="4"
         android:text="Following Apple, Microsoft made it easier to buy Surface repair tools"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/thumbnail_searchpage"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +58,7 @@
         android:layout_marginTop="16dp"
         android:text="MAR 3, '21"
         android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/title_searchpage"
         app:layout_constraintTop_toBottomOf="@+id/title_searchpage" />
 
