@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         progressIndicator = findViewById(R.id.progress_indicator);
 
-        newsAdapter = new NewsAdapter(this, 0, new ArrayList<NewsData>());
+        newsAdapter = new NewsAdapter(this, 0, new ArrayList<NewsData>(), R.layout.listview_item_homepage, 1);
         itemsListView.setAdapter(newsAdapter);
 
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

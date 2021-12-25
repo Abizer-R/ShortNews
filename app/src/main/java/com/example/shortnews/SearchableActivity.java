@@ -72,9 +72,9 @@ public class SearchableActivity extends AppCompatActivity implements LoaderManag
         emptyStateView = findViewById(R.id.empty_state_view_searchpage);
         itemsListView.setEmptyView(emptyStateView);
 
-        progressIndicator = findViewById(R.id.progress_indicator);
+        progressIndicator = findViewById(R.id.progress_indicator_searchpage);
 
-        newsAdapter = new NewsAdapter(this, 0, new ArrayList<NewsData>());
+        newsAdapter = new NewsAdapter(this, 0, new ArrayList<NewsData>(), R.layout.listview_item_searchpage, 2);
         itemsListView.setAdapter(newsAdapter);
 
         itemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
